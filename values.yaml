@@ -1,0 +1,70 @@
+global:
+  defaultStorageClass: phx-default
+
+commonAnnotations:
+  avalara.io/contact: "dg-in-raas-submission-squad@avalara.com"
+  avalara.io/department: "returns"
+  avalara.io/team: "TEAM-00226"
+  deployment.avalara.io/pipeline: "https://scm.platform.us-west-2.avalara.io/raas/raas-solutions/raas-platform-solution/-/pipelines/2727901"
+  inventory.avalara.io/appid: "APP-01037"
+  inventory.avalara.io/cmpid: "CMP-00972"
+  reliability.avalara.io/escalation: "apoorva.dabri@avalara.com"
+  security.avalara.io/data-class: "internal"
+  security.avalara.io/user-data: "false"
+
+commonLabels:
+  avalara.io/version: "1.0.0" # The current version of the resource (semver, commit, hash, etc)
+  avalara.io/component: "app" # The component within the architecture
+  avalara.io/managed-by: "helm" # The tool being used to manage this resource
+  avalara.io/environment: "dev" # The runtime environment of this resource
+  avalara.io/part-of: "raas-data-service-mesh-core" # The gitlab repository of the team/service that owns this resource
+  
+master:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 128Mi
+  persistence:
+    enabled: true
+    size: 2Gi
+
+architecture: replication
+
+replica:
+  replicaCount: 2
+  resources:
+    limits:
+      cpu: 500m
+      memory: 256Mi
+    requests:
+      cpu: 250m
+      memory: 128Mi
+  persistence:
+    enabled: true
+    size: 2Gi
+
+sentinel:
+  enabled: true
+  replicaCount: 3
+  usePassword: true
+
+tls:
+  enabled: false
+auth:
+  enabled: false
+
+# Uncomment for production
+# auth:
+#   enabled: true
+#   sentinelPassword: "sentinel"
+#   password: "redis"
+
+# tls:
+#   enabled: true
+#   existingSecret: cluster-wildcard-tls
+
+metrics:
+  enabled: false
