@@ -1,3 +1,5 @@
+# Reference: https://artifacthub.io/packages/helm/bitnami/redis
+
 global:
   defaultStorageClass: phx-default
 
@@ -34,7 +36,7 @@ master:
 architecture: replication
 
 replica:
-  replicaCount: 2
+  replicaCount: 3
   resources:
     limits:
       cpu: 500m
@@ -48,6 +50,7 @@ replica:
 
 sentinel:
   enabled: true
+  quorum: 2
   replicaCount: 3
   usePassword: true
 
