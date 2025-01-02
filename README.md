@@ -40,7 +40,7 @@ helm install my-redis bitnami/redis -f values.yaml
 
 When installing the chart with `architecture=replication` and `sentinel.enabled=true`, it will deploy a Redis® master StatefulSet (only one master allowed) and a Redis® replicas StatefulSet. In this case, the pods will contain an extra container with Redis® Sentinel. This container will form a cluster of Redis® Sentinel nodes, which will promote a new master in case the actual one fails.
 
-For more details, refer to the Bitnami Redis Helm Chart.
+For more details, refer to the [Bitnami Redis Helm Chart](https://github.com/bitnami/charts/tree/main/bitnami/redis).
 
 ## Features
 
@@ -114,7 +114,7 @@ Once the Redis release is created, follow these steps to test its high availabil
     Exec into the Ubuntu pod and install the necessary tools:
 
     ```bash
-    kubectl exec --tty -i ubuntu-client --namespace raas-submission-service -- bash
+    kubectl exec --tty -i ubuntu-client --namespace submission-service -- bash
     apt-get update && apt-get install redis-tools vim -y
     ```
 
@@ -127,7 +127,7 @@ Once the Redis release is created, follow these steps to test its high availabil
     ```bash
     #!/bin/bash
 
-    SENTINEL_HOSTS=("sentinel-host-1" "sentinel-host-2" "sentinel-host-3") # replace with actual sentinel host internal DNS names (e.g., raas-squad-redis-node-0.raas-squad-redis-headless.raas-submission-service.svc.cluster.local)
+    SENTINEL_HOSTS=("sentinel-host-1" "sentinel-host-2" "sentinel-host-3") # replace with actual sentinel host internal DNS names (e.g., squad-redis-node-0.squad-redis-headless.submission-service.svc.cluster.local)
     SENTINEL_PORT=26379
     KEY_NAME="test-key"
     
@@ -177,11 +177,12 @@ Once the Redis release is created, follow these steps to test its high availabil
     Open another terminal to monitor and interact with the Redis cluster:
 
     ```bash
-    kubectl get pods --namespace raas-submission-service
-    kubectl delete pod <redis-pod-name> --namespace raas-submission-service
+    kubectl get pods --namespace submission-service
+    kubectl top pods --containers  --namespace submission-service
+    kubectl delete pod <redis-pod-name> --namespace submission-service
     ```
 
-    Replace `<redis-pod-name>` with the name of one of the Redis pods (e.g., `raas-squad-redis-node-0`).
+    Replace `<redis-pod-name>` with the name of one of the Redis pods (e.g., `squad-redis-node-0`).
 
 ## Observing Failover
 
